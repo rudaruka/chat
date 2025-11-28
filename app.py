@@ -8,8 +8,8 @@ import time
 
 # Secrets에서 변수를 안전하게 로드합니다.
 try:
-    SUPABASE_URL = st.secrets["SUPABASE_URL"]
-    SUPABASE_KEY = st.secrets["SUPABASE_KEY"]
+st.write(f"URL: {st.secrets.get('SUPABASE_URL')}")
+st.write(f"KEY: {st.secrets.get('SUPABASE_KEY')}")
 except KeyError:
     # Secrets 정보가 없을 때 사용자에게 명확히 알리고 앱 중단
     st.error("🚨 Supabase 연결 정보(Secrets)를 찾을 수 없습니다. Streamlit Cloud의 Secrets 설정 또는 .streamlit/secrets.toml 파일을 확인해주세요.")
