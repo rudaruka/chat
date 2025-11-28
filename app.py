@@ -8,10 +8,11 @@ import time
 
 # Secrets에서 변수를 안전하게 로드합니다.
 try:
-    st.write(f"URL: {st.secrets.get('SUPABASE_URL')}")
-    st.write(f"KEY: {st.secrets.get('SUPABASE_KEY')}")
-    except KeyError:
-    # Secrets 정보가 없을 때 사용자에게 명확히 알리고 앱 중단
+    # 🚨 올바른 코드: Secrets 값을 변수에 할당합니다.
+    SUPABASE_URL = st.secrets["SUPABASE_URL"]
+    SUPABASE_KEY = st.secrets["SUPABASE_KEY"]
+except KeyError:
+    # 🚨 올바른 코드: Secrets 정보가 없을 때 앱 중단
     st.error("🚨 Supabase 연결 정보(Secrets)를 찾을 수 없습니다. Streamlit Cloud의 Secrets 설정 또는 .streamlit/secrets.toml 파일을 확인해주세요.")
     st.stop()
     
@@ -72,7 +73,6 @@ for message in messages:
     content = message.get('content', '')
     
     # 내 메시지와 상대방 메시지를 구분하여 다른 UI로 표시
-    # current_user와 sender가 같으면 'user' role, 다르면 'assistant' role 사용
     role_display = "user" if sender == current_user else "assistant"
     
     # 아바타에 사용자 이름의 첫 글자를 사용하여 시각적 구분
@@ -90,7 +90,6 @@ if prompt := st.chat_input("메시지를 입력하세요..."):
         supabase.table("messages").insert({
             "sender": current_user, 
             "content": prompt
-            # created_at 필드는 DB에서 자동으로 채워집니다.
         }).execute()
         
         # 메시지 전송 후 화면을 새로고침하여 DB에서 최신 메시지를 바로 불러오도록 함
